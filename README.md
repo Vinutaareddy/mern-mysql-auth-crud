@@ -123,8 +123,8 @@ Base URL: http://localhost:5000/api
 
 POST /api/auth/register
 POST /api/auth/login
-POST /api/auth/forgot-password
-POST /api/auth/reset-password
+POST /api/auth/forgot
+POST /api/auth/reset
 GET /api/auth/me
 
 Header: Authorization: Bearer TOKEN
