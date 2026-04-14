@@ -8,6 +8,26 @@ import jwt from "jsonwebtoken";
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
 
+  // ✅ basic validation
+  if (!name || !email || !password) {
+    return res.status(400).json({ msg: "All fields required" });
+  }
+
+  // ✅ email validation
+  if (!email.includes("@")) {
+    return res.status(400).json({ msg: "Invalid email format" });
+  }
+
+  // ✅ check existing user
+  const [existing] = await db.query(
+    "SELECT * FROM users WHERE email = ?",
+    [email]
+  );
+
+  if (existing.length) {
+    return res.status(400).json({ msg: "Email already registered" });
+  }
+
   const hash = await bcrypt.hash(password, 10);
 
   await db.query(
@@ -15,7 +35,7 @@ export const register = async (req, res) => {
     [name, email, hash]
   );
 
-  res.json({ msg: "Registered" });
+  res.json({ msg: "Registered successfully" });
 };
 
 // ---------------- LOGIN ----------------
